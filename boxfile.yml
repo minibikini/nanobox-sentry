@@ -1,0 +1,53 @@
+# https://docs.nanobox.io/
+
+run.config:
+  engine: python
+  engine.config:
+    runtime: python-2.7
+
+  dev_packages:
+    - inotify-tools
+
+  extra_packages:
+    - postgresql95-client-9.5.9
+    - libjpeg-turbo-1.5.0
+
+  cache_dirs:
+    - pip_cache
+    - bin
+
+  extra_path_dirs:
+    - bin
+
+  extra_steps:
+    - pip install -U --cache-dir /app/pip_cache sentry
+
+  build_triggers:
+    - config/sentry.conf.py
+    - config/config.yml
+
+  fs_watch: true
+
+data.db:
+  image: nanobox/postgresql:9.5
+
+data.redis:
+  image: nanobox/redis:4.0
+
+web.main:
+  start: sentry run web
+
+worker.worker:
+  start: sentry run worker
+
+worker.cron:
+  start: sentry run cron
+
+deploy.config:
+  transform:
+    - bash ./create_config_yml.sh
+
+  before_live:
+    web.main:
+      - sentry upgrade --noinput
+
