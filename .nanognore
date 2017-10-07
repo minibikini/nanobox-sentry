@@ -1,2 +1,7 @@
+.DS_Store
+.git/
 pip_cache/
-prod.env
+*.env
+.vscode
+.gitignore
+README.md
