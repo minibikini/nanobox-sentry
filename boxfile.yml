@@ -31,17 +31,29 @@ run.config:
 data.db:
   image: nanobox/postgresql:9.5
 
+data.storage:
+  image: nanobox/unfs:0.9
+
 data.redis:
   image: nanobox/redis:4.0
 
 web.main:
   start: sentry run web
+  network_dirs:
+    data.storage:
+      - sentry-files
 
 worker.worker:
   start: sentry run worker
+  network_dirs:
+    data.storage:
+      - sentry-files
 
 worker.cron:
   start: sentry run cron
+  network_dirs:
+    data.storage:
+      - sentry-files
 
 deploy.config:
   transform:

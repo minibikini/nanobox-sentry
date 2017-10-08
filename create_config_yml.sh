@@ -9,11 +9,11 @@ tee ./config/config.yml << END
 ###############
 
 # mail.backend: 'smtp'  # Use dummy if you want to disable email entirely
-# mail.host: 'localhost'
-# mail.port: 25
-# mail.username: ''
-# mail.password: ''
-# mail.use-tls: false
+mail.host: '$SMTP_HOST'
+mail.port: $SMTP_PORT
+mail.username: '$SMTP_USER'
+mail.password: '$SMTP_PASS'
+mail.use-tls: $SMTP_USE_TLS
 # The email address to send on behalf of
 # mail.from: 'root@localhost'
 
@@ -70,7 +70,7 @@ redis.clusters:
 
 filestore.backend: 'filesystem'
 filestore.options:
-  location: '/tmp/sentry-files'
+  location: '/app/sentry-files'
 
 # filestore.backend: 's3'
 # filestore.options:
